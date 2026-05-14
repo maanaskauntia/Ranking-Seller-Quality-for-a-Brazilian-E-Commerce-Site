@@ -36,12 +36,8 @@ Operational_Rigor_Percentile AS
 (
     SELECT 
         i.seller_id,
-        AVG(DATE_DIFF(
-								                'hour',
-								                CAST(NULLIF(o.order_delivered_carrier_date, '') AS TIMESTAMP),
-								                CAST(NULLIF(i.shipping_limit_date, '') AS TIMESTAMP)
-								            ) --negative hrs means delay
-								        ) as shipping_reliability,
+        AVG(DATE_DIFF('hour', CAST(NULLIF(o.order_delivered_carrier_date, '') AS TIMESTAMP),
+			CAST(NULLIF(i.shipping_limit_date, '') AS TIMESTAMP))) as shipping_reliability, --negative hrs means delay
         -- Calculating the Percentiles of Avg Carrier Handover Lag 
         round(PERCENT_RANK() OVER (ORDER by
 								        AVG(
@@ -67,7 +63,7 @@ FROM Economic_And_Customer_Metrics_Percentiles AS ec
 JOIN Operational_Rigor_Percentile AS ops ON ec.seller_id=ops.seller_id
 ),
 
-try as (
+segment_profile as (
 SELECT seller_id, total_orders, GMV, avg_review_score, shipping_reliability, active_days_in_180d, AOV,
 	   round(final_score,2) AS final_score,
 	    (CASE 
@@ -81,7 +77,10 @@ ORDER BY final_score DESC
 )
 
 --- Final profiling of each segment
-SELECT seller_tier, COUNT(seller_id) as total_sellers, AVG(total_orders) as avg_order_per_seller, round(SUM(GMV),2) as GMV, AVG(avg_review_score) as cust_review, AVG(shipping_reliability) as shipping_reliability_hrs, AVG(active_days_in_180d), AVG(AOV)
-FROM try
+SELECT seller_tier as Seller_Tier, COUNT(seller_id) as Total_Sellers, AVG(total_orders) as Avg_Orders_Per_Seller, 
+		round(SUM(GMV),2) as Gross_Merch_Value, AVG(avg_review_score) as Customer_Reviews, 
+		AVG(shipping_reliability) as Handling_Hrs_Before_Time, AVG(active_days_in_180d) as Recent_Active_Days, 
+		AVG(AOV) as Average_Order_Value
+FROM segment_profile
 GROUP BY seller_tier
 ORDER BY total_sellers
