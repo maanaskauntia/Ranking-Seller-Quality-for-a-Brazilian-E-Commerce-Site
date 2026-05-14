@@ -80,7 +80,7 @@ ORDER BY final_score DESC
 SELECT seller_tier as Seller_Tier, COUNT(seller_id) as Total_Sellers, AVG(total_orders) as Avg_Orders_Per_Seller, 
 		round(SUM(GMV),2) as Gross_Merch_Value, AVG(avg_review_score) as Customer_Reviews, 
 		AVG(shipping_reliability) as Handling_Hrs_Before_Time, AVG(active_days_in_180d) as Recent_Active_Days, 
-		AVG(AOV) as Average_Order_Value
+		AVG(AOV) as Avg_Order_Value
 FROM segment_assignment
 GROUP BY seller_tier
 ORDER BY total_sellers
