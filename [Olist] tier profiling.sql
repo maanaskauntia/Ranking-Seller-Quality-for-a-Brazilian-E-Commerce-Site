@@ -63,7 +63,7 @@ FROM Economic_And_Customer_Metrics_Percentiles AS ec
 JOIN Operational_Rigor_Percentile AS ops ON ec.seller_id=ops.seller_id
 ),
 
-segment_profile as (
+segment_assignment as (
 SELECT seller_id, total_orders, GMV, avg_review_score, shipping_reliability, active_days_in_180d, AOV,
 	   round(final_score,2) AS final_score,
 	    (CASE 
@@ -81,6 +81,6 @@ SELECT seller_tier as Seller_Tier, COUNT(seller_id) as Total_Sellers, AVG(total_
 		round(SUM(GMV),2) as Gross_Merch_Value, AVG(avg_review_score) as Customer_Reviews, 
 		AVG(shipping_reliability) as Handling_Hrs_Before_Time, AVG(active_days_in_180d) as Recent_Active_Days, 
 		AVG(AOV) as Average_Order_Value
-FROM segment_profile
+FROM segment_assignment
 GROUP BY seller_tier
 ORDER BY total_sellers
