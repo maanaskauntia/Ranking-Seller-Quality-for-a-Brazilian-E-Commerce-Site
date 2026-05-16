@@ -116,7 +116,7 @@ Based on this segmentation, we can now make recommendations on the level of cust
 In order to make recommendations, it is important to have a deep understanding of the seller-profile in each segment. Simply put, we’d want to know how an average seller in a segment performs across metrics, what their weaknesses are, and consequently, what their needs might be.
 
 <div align="center">
-  <img src="https://lh3.googleusercontent.com/d/1ga3-0-VGcuq8Ezl-NwOWl2zd1YZgoxzB8" alt="Seller Segments" width="600">
+  <img src="https://lh3.googleusercontent.com/d/1zfDKGWR7YJUcooj0Xwaj1SoJEDVnK0SZ" alt="Seller Segments" width="800">
 </div>
 
 Here is the script that returns the seller profiles shown above.
